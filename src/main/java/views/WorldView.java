@@ -87,5 +87,10 @@ public class WorldView implements TickListener {
             clear(creature.getPrevX(), creature.getPrevY());
             drawField(creature.getPrevX(), creature.getPrevY());
         }
+
+        for (Creature dyingCreature : algorithm.getDyingCreatures()) {
+            clear(dyingCreature.getX(), dyingCreature.getY());
+            drawField(dyingCreature.getX(), dyingCreature.getY());
+        }
     }
 }

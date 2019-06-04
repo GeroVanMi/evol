@@ -12,12 +12,13 @@ public class Algorithm {
 
     private World world;
     private Timeline loop;
-    private ArrayList<Creature> creatures;
+    private ArrayList<Creature> creatures, dyingCreatures;
     private ArrayList<TickListener> tickListeners;
 
     public Algorithm(int worldSize) {
         this.world = new World(worldSize);
         creatures = new ArrayList<>();
+        dyingCreatures = new ArrayList<>();
         creatures.add(new Creature(5, 5));
 
         this.tickListeners = new ArrayList<>();
@@ -28,31 +29,39 @@ public class Algorithm {
     }
 
     private void tick() {
-        Random random = new Random();
+
         for (Creature creature : creatures) {
 
-            int x = creature.getX(), y = creature.getY();
-            if (x > world.getSize() - 1) {
-                creature.setX(x % world.getSize());
-            } else if (x < 0) {
-                creature.setX(world.getSize() - 1);
-            }
-            if (y > (world.getSize() - 1)) {
-                creature.setY(y % (world.getSize()));
-            } else if (y < 0) {
-                creature.setY(world.getSize() - 1);
-            }
+            if (creature.getEnergy() > 1) {
 
-            if(random.nextBoolean()) {
-                creature.moveHorizontal(random.nextBoolean());
+                int x = creature.getX(), y = creature.getY();
+                if (x > world.getSize() - 1) {
+                    creature.setX(x % world.getSize());
+                } else if (x < 0) {
+                    creature.setX(world.getSize() - 1);
+                }
+                if (y > (world.getSize() - 1)) {
+                    creature.setY(y % (world.getSize()));
+                } else if (y < 0) {
+                    creature.setY(world.getSize() - 1);
+                }
+
+                creature.tick();
+
             } else {
-                creature.moveVertical(random.nextBoolean());
+                dyingCreatures.add(creature);
             }
-
         }
+
+        for (Creature dyingCreature : dyingCreatures) {
+            creatures.remove(dyingCreature);
+        }
+
         for (TickListener tickListener : tickListeners) {
             tickListener.update();
         }
+
+        dyingCreatures.clear();
     }
 
     public World getWorld() {
@@ -61,6 +70,10 @@ public class Algorithm {
 
     public ArrayList<Creature> getCreatures() {
         return creatures;
+    }
+
+    public ArrayList<Creature> getDyingCreatures() {
+        return dyingCreatures;
     }
 
     public void addTickListener(TickListener tickListener) {

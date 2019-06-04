@@ -1,5 +1,7 @@
 package algorithm;
 
+import java.util.Random;
+
 public class Creature {
     private double energy;
     private int x, y, prevX, prevY;
@@ -14,9 +16,20 @@ public class Creature {
         this.energy += foodValue;
     }
 
-    public void moveVertical(boolean up) {
+    public void tick() {
+        Random random = new Random();
+
         this.energy -= 1;
+
         this.setPrevPos();
+        if(random.nextBoolean()) {
+            this.moveHorizontal(random.nextBoolean());
+        } else {
+            this.moveVertical(random.nextBoolean());
+        }
+    }
+
+    public void moveVertical(boolean up) {
         if(up) {
             x -= 1;
         } else {
@@ -25,8 +38,6 @@ public class Creature {
     }
 
     public void moveHorizontal(boolean left) {
-        this.energy -= 1;
-        this.setPrevPos();
         if(left) {
             y -= 1;
         } else {
@@ -63,5 +74,9 @@ public class Creature {
     public void setY(int y) {
         this.setPrevPos();
         this.y = y;
+    }
+
+    public double getEnergy() {
+        return energy;
     }
 }
