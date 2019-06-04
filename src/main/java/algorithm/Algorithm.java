@@ -5,7 +5,6 @@ import interfaces.TickListener;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -23,7 +22,7 @@ public class Algorithm {
 
         this.tickListeners = new ArrayList<>();
 
-        this.loop = new Timeline(new KeyFrame(Duration.millis(1500), event -> this.tick()));
+        this.loop = new Timeline(new KeyFrame(Duration.millis(200), event -> this.tick()));
         loop.setCycleCount(Timeline.INDEFINITE);
         loop.play();
     }
@@ -31,11 +30,25 @@ public class Algorithm {
     private void tick() {
         Random random = new Random();
         for (Creature creature : creatures) {
+
+            int x = creature.getX(), y = creature.getY();
+            if (x > world.getSize() - 1) {
+                creature.setX(x % world.getSize());
+            } else if (x < 0) {
+                creature.setX(world.getSize() - 1);
+            }
+            if (y > (world.getSize() - 1)) {
+                creature.setY(y % (world.getSize()));
+            } else if (y < 0) {
+                creature.setY(world.getSize() - 1);
+            }
+
             if(random.nextBoolean()) {
                 creature.moveHorizontal(random.nextBoolean());
             } else {
                 creature.moveVertical(random.nextBoolean());
             }
+
         }
         for (TickListener tickListener : tickListeners) {
             tickListener.update();
