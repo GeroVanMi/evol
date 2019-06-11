@@ -9,7 +9,7 @@ import views.WorldView;
 public class Evol extends Application {
 
     public void start(Stage primaryStage) throws Exception {
-        Algorithm algorithm = new Algorithm(25, 2, 15, 0.3);
+        Algorithm algorithm = new Algorithm(25, 1, 15, 0.6);
 
         WorldView worldView = new WorldView(algorithm);
 

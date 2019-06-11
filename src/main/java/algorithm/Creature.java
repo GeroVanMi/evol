@@ -76,7 +76,6 @@ public class Creature {
             this.turn();
         }
 
-
         int newY = y;
         int newX = x;
 
@@ -88,6 +87,7 @@ public class Creature {
             case 45:
                 newX++;
                 newY--;
+                break;
 
             case 90:
                 newX++;
@@ -96,6 +96,7 @@ public class Creature {
             case 135:
                 newX++;
                 newY++;
+                break;
 
             case 180:
                 newY++;
@@ -104,6 +105,7 @@ public class Creature {
             case 225:
                 newX--;
                 newY++;
+                break;
 
             case 270:
                 newX--;
@@ -112,6 +114,7 @@ public class Creature {
             case 315:
                 newX--;
                 newY--;
+                break;
         }
 
         world.getFields()[x][y].creatureLeaves();
@@ -122,6 +125,8 @@ public class Creature {
                 this.move(world, recursiveCounter + 1);
             }
         } else {
+            prevX = x;
+            prevY = y;
             x = newX;
             y = newY;
         }

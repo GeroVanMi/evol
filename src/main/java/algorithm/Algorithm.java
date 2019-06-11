@@ -34,8 +34,9 @@ public class Algorithm {
 
     private void tick() {
         for (Creature creature : creatures) {
+            creature.tick(world);
+
             if(creature.isAlive()) {
-                creature.tick(world);
                 if(creature.getEnergy() > creature.getReproductionEnergyNeeded()) {
                     Creature newCreature = creature.reproduce(world);
 

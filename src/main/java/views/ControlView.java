@@ -30,7 +30,7 @@ public class ControlView {
         double offspringEnergy = 1;
         double reproductionEnergyNeeded = 1.5;
 
-        Creature creature = new Creature(10, 10, 1, 0, energyCost, 0.5,
+        Creature creature = new Creature(10, 10, 0.5, 45, energyCost, 0.5,
                 offspringEnergy, reproductionEnergyNeeded, energyCost / 5, offspringEnergy / 5,
                 reproductionEnergyNeeded / 5);
         algorithm.addCreature(creature);
