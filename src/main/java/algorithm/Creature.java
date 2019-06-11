@@ -27,18 +27,16 @@ public class Creature {
     }
 
     public void tick(World world) {
-        if(alive) {
-            setPrevPos();
+        setPrevPos();
 
-            move(world);
-            energy -= energyCost;
+        move(world);
+        energy -= energyCost;
 
-            Field field = world.getFields()[x][y];
-            eat(field.takeFood());
+        Field field = world.getFields()[x][y];
+        eat(field.takeFood());
 
-            if(energy == 0) {
-                die();
-            }
+        if (energy <= 0) {
+            die();
         }
     }
 
@@ -49,14 +47,14 @@ public class Creature {
     private void turn() {
         Random random = new Random();
 
-        if(random.nextBoolean()) {
+        if (random.nextBoolean()) {
             direction -= 90;
-            if(direction < 0) {
+            if (direction < 0) {
                 direction = 270;
             }
         } else {
             direction += 90;
-            if(direction == 360) {
+            if (direction == 360) {
                 direction = 0;
             }
         }
@@ -65,13 +63,13 @@ public class Creature {
     public void move(World world) {
 
         Random random = new Random();
-        if(random.nextDouble() > turnChance) {
+        if (random.nextDouble() > turnChance) {
             this.turn();
         }
 
         switch (direction) {
             case 0:
-                if(world.getFields()[x][y - 1].isBlocked()) {
+                if (world.getFields()[x][y - 1].isBlocked()) {
                     this.turn();
                 } else {
                     y--;
@@ -79,7 +77,7 @@ public class Creature {
                 break;
 
             case 90:
-                if(world.getFields()[x + 1][y].isBlocked()) {
+                if (world.getFields()[x + 1][y].isBlocked()) {
                     this.turn();
                 } else {
                     x++;
@@ -87,7 +85,7 @@ public class Creature {
                 break;
 
             case 180:
-                if(world.getFields()[x][y + 1].isBlocked()) {
+                if (world.getFields()[x][y + 1].isBlocked()) {
                     this.turn();
                 } else {
                     y++;
@@ -95,7 +93,7 @@ public class Creature {
                 break;
 
             case 270:
-                if(world.getFields()[x - 1][y].isBlocked()) {
+                if (world.getFields()[x - 1][y].isBlocked()) {
                     this.turn();
                 } else {
                     x--;
@@ -129,21 +127,11 @@ public class Creature {
         this.prevY = this.y;
     }
 
-    public void setX(int x) {
-        this.setPrevPos();
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.setPrevPos();
-        this.y = y;
+    public boolean isAlive() {
+        return alive;
     }
 
     public double getEnergy() {
         return energy;
-    }
-
-    public boolean isAlive() {
-        return alive;
     }
 }

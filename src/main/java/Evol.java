@@ -8,8 +8,11 @@ import views.WorldView;
 public class Evol extends Application {
 
     public void start(Stage primaryStage) throws Exception {
-        Algorithm algorithm = new Algorithm(25);
-        algorithm.addCreature(new Creature(12, 12, 1, 0, 0.2, 0.5));
+        Algorithm algorithm = new Algorithm(25, 5, 50);
+
+        algorithm.addCreature(new Creature(12, 12, 1, 0, 0.1, 0.5));
+        algorithm.addCreature(new Creature(8, 8, 1, 0, 0.1, 0.5));
+        algorithm.addCreature(new Creature(15, 15, 1, 0, 0.1, 0.5));
 
         WorldView worldView = new WorldView(algorithm);
 

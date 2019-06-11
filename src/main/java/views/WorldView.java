@@ -93,4 +93,10 @@ public class WorldView implements TickListener {
             drawField(dyingCreature.getX(), dyingCreature.getY());
         }
     }
+
+    @Override
+    public void updateAll() {
+        this.renderFullWorld();
+        this.update();
+    }
 }

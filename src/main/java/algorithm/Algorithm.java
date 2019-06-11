@@ -1,11 +1,11 @@
 package algorithm;
 
-import algorithm.world.Field;
 import algorithm.world.World;
 import interfaces.TickListener;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+
 import java.util.ArrayList;
 
 public class Algorithm {
@@ -14,16 +14,19 @@ public class Algorithm {
     private Timeline loop;
     private ArrayList<Creature> creatures, dyingCreatures, bornCreatures;
     private ArrayList<TickListener> tickListeners;
+    private int remainingCycles, totalCycles;
 
-    public Algorithm(int worldSize) {
+    public Algorithm(int worldSize, int ticksPerSeconds, int totalCycles) {
         this.world = new World(worldSize);
         creatures = new ArrayList<>();
         dyingCreatures = new ArrayList<>();
         bornCreatures = new ArrayList<>();
+        this.totalCycles = totalCycles;
+        this.remainingCycles = totalCycles;
 
         this.tickListeners = new ArrayList<>();
 
-        this.loop = new Timeline(new KeyFrame(Duration.millis(20), event -> this.tick()));
+        this.loop = new Timeline(new KeyFrame(Duration.millis(1000 / ticksPerSeconds), event -> this.tick()));
         loop.setCycleCount(Timeline.INDEFINITE);
         loop.play();
     }
@@ -31,7 +34,22 @@ public class Algorithm {
     private void tick() {
 
         for (Creature creature : creatures) {
-            creature.tick(world);
+            if(creature.isAlive()) {
+                creature.tick(world);
+            } else {
+                dyingCreatures.add(creature);
+            }
+        }
+
+        if(remainingCycles == 0) {
+            world.generateFood();
+            remainingCycles = totalCycles;
+
+            for (TickListener tickListener : tickListeners) {
+                tickListener.updateAll();
+            }
+        } else {
+            remainingCycles--;
         }
 
         creatures.removeAll(dyingCreatures);
