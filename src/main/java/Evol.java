@@ -3,16 +3,13 @@ import algorithm.Creature;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import views.ControlView;
 import views.WorldView;
 
 public class Evol extends Application {
 
     public void start(Stage primaryStage) throws Exception {
-        Algorithm algorithm = new Algorithm(25, 5, 50);
-
-        algorithm.addCreature(new Creature(12, 12, 1, 0, 0.1, 0.5));
-        algorithm.addCreature(new Creature(8, 8, 1, 0, 0.1, 0.5));
-        algorithm.addCreature(new Creature(15, 15, 1, 0, 0.1, 0.5));
+        Algorithm algorithm = new Algorithm(25, 2, 15, 0.3);
 
         WorldView worldView = new WorldView(algorithm);
 
@@ -22,5 +19,13 @@ public class Evol extends Application {
         primaryStage.setScene(scene);
 
         primaryStage.show();
+
+        // Secondary Control Window
+
+        ControlView controlView = new ControlView(algorithm);
+        Scene controlScene = new Scene(controlView.getPane());
+        Stage controlStage = new Stage();
+        controlStage.setScene(controlScene);
+        controlStage.show();
     }
 }

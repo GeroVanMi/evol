@@ -14,15 +14,16 @@ public class Algorithm {
     private Timeline loop;
     private ArrayList<Creature> creatures, dyingCreatures, bornCreatures;
     private ArrayList<TickListener> tickListeners;
-    private int remainingCycles, totalCycles;
+    private int remainingCycles, totalCycles, ticksPassed;
 
-    public Algorithm(int worldSize, int ticksPerSeconds, int totalCycles) {
-        this.world = new World(worldSize);
+    public Algorithm(int worldSize, int ticksPerSeconds, int totalCycles, double growChance) {
+        this.world = new World(worldSize, growChance);
         creatures = new ArrayList<>();
         dyingCreatures = new ArrayList<>();
         bornCreatures = new ArrayList<>();
         this.totalCycles = totalCycles;
         this.remainingCycles = totalCycles;
+        ticksPassed = 0;
 
         this.tickListeners = new ArrayList<>();
 
@@ -32,10 +33,16 @@ public class Algorithm {
     }
 
     private void tick() {
-
         for (Creature creature : creatures) {
             if(creature.isAlive()) {
                 creature.tick(world);
+                if(creature.getEnergy() > creature.getReproductionEnergyNeeded()) {
+                    Creature newCreature = creature.reproduce(world);
+
+                    if(newCreature != null) {
+                        bornCreatures.add(newCreature);
+                    }
+                }
             } else {
                 dyingCreatures.add(creature);
             }
@@ -53,14 +60,24 @@ public class Algorithm {
         }
 
         creatures.removeAll(dyingCreatures);
+        creatures.addAll(bornCreatures);
 
         for (TickListener tickListener : tickListeners) {
             tickListener.update();
         }
 
-        creatures.addAll(bornCreatures);
+        System.out.println("-------------------------");
+        System.out.println("Tick: " );
+        System.out.println("Living Creatures: " + creatures.size());
+        System.out.println("Born Creatures : " + bornCreatures.size());
+        System.out.println("Dying Creatures: " + dyingCreatures.size());
+        System.out.println("Remaining Cycles: " + remainingCycles);
+        System.out.println("-------------------------");
+
         bornCreatures.clear();
         dyingCreatures.clear();
+        ticksPassed++;
+
     }
 
     public void addCreature(Creature creature) {

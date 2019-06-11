@@ -19,7 +19,6 @@ public class WorldView implements TickListener {
 
     private Color BORDER = new Color(0.25, 0.25, 0.25, 1);
     private Color BACKGROUND = new Color(0.75, 0.75, 0.75, 1);
-    private Color CREATURE = new Color(0.25, 0.75, 0.25, 1);
     private Color FOOD = new Color(0.75, 0.25, 0.25, 1);
 
     public WorldView(Algorithm algorithm) {
@@ -68,7 +67,7 @@ public class WorldView implements TickListener {
     }
 
     private void drawCreature(Creature creature) {
-        brush.setFill(CREATURE);
+        brush.setFill(new Color(creature.getRed(), creature.getGreen(), creature.getBlue(), 1));
         brush.fillOval(creature.getX() * fieldWidth, creature.getY() * fieldLength, fieldWidth, fieldLength);
     }
 

@@ -5,12 +5,13 @@ import java.util.Random;
 public class World {
     private Field[][] fields;
     private int size;
+    private double growChance;
 
-    public World(int size) {
+    public World(int size, double growChance) {
         this.size = size;
+        this.growChance = growChance;
         fields = new Field[size][size];
 
-        Random random = new Random();
         for(int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
 
@@ -31,7 +32,7 @@ public class World {
         for(int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
                 Field currentField = fields[x][y];
-                if(!currentField.isBlocked() && new Random().nextBoolean()) {
+                if(!currentField.isBlocked() && new Random().nextDouble() > growChance) {
                     currentField.growFood();
                 }
             }
