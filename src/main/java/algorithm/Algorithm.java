@@ -14,7 +14,7 @@ public class Algorithm {
     private Timeline loop;
     private ArrayList<Creature> creatures, dyingCreatures, bornCreatures;
     private ArrayList<TickListener> tickListeners;
-    private int remainingCycles, totalCycles, ticksPassed;
+    private int remainingCycles, totalCycles;
 
     public Algorithm(int worldSize, int ticksPerSeconds, int totalCycles, double growChance) {
         this.world = new World(worldSize, growChance);
@@ -23,7 +23,6 @@ public class Algorithm {
         bornCreatures = new ArrayList<>();
         this.totalCycles = totalCycles;
         this.remainingCycles = totalCycles;
-        ticksPassed = 0;
 
         this.tickListeners = new ArrayList<>();
 
@@ -34,11 +33,11 @@ public class Algorithm {
 
     private void tick() {
         for (Creature creature : creatures) {
-            creature.tick(world);
+            creature.tick();
 
             if(creature.isAlive()) {
                 if(creature.getEnergy() > creature.getReproductionEnergyNeeded()) {
-                    Creature newCreature = creature.reproduce(world);
+                    Creature newCreature = creature.reproduce();
 
                     if(newCreature != null) {
                         bornCreatures.add(newCreature);
@@ -67,18 +66,16 @@ public class Algorithm {
             tickListener.update();
         }
 
-        System.out.println("-------------------------");
+        /*System.out.println("-------------------------");
         System.out.println("Tick: " );
         System.out.println("Living Creatures: " + creatures.size());
         System.out.println("Born Creatures : " + bornCreatures.size());
         System.out.println("Dying Creatures: " + dyingCreatures.size());
         System.out.println("Remaining Cycles: " + remainingCycles);
-        System.out.println("-------------------------");
+        System.out.println("-------------------------");*/
 
         bornCreatures.clear();
         dyingCreatures.clear();
-        ticksPassed++;
-
     }
 
     public void addCreature(Creature creature) {

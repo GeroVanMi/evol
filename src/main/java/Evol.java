@@ -1,5 +1,5 @@
 import algorithm.Algorithm;
-import algorithm.Creature;
+import algorithm.Statskeeper;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -9,11 +9,13 @@ import views.WorldView;
 public class Evol extends Application {
 
     public void start(Stage primaryStage) throws Exception {
-        Algorithm algorithm = new Algorithm(25, 1, 15, 0.6);
+        Algorithm algorithm = new Algorithm(100, 10, 5, 0.3);
+        Statskeeper statskeeper = new Statskeeper(algorithm);
 
         WorldView worldView = new WorldView(algorithm);
 
         algorithm.addTickListener(worldView);
+        algorithm.addTickListener(statskeeper);
 
         Scene scene = new Scene(worldView.getPane());
         primaryStage.setScene(scene);

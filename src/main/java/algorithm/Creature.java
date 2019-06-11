@@ -14,9 +14,11 @@ public class Creature {
     private double offspringEnergy;
     private double red, green, blue;
     private double reproductionEnergyNeeded;
+    private World world;
 
     public Creature(int x, int y, double initialEnergy, int direction, double energyCost, double turnChance,
-                    double offspringEnergy, double reproductionEnergyNeeded, double red, double green, double blue) {
+                    double offspringEnergy, double reproductionEnergyNeeded, double red, double green, double blue,
+                    World world) {
         this.x = x;
         this.y = y;
         this.energy = initialEnergy;
@@ -26,6 +28,7 @@ public class Creature {
         this.turnChance = turnChance;
         this.reproductionEnergyNeeded = reproductionEnergyNeeded;
         this.offspringEnergy = offspringEnergy;
+        this.world = world;
 
         // Set the color of the Creature
         this.red = red; this.green = green; this.blue = blue;
@@ -35,10 +38,10 @@ public class Creature {
         this.energy += foodValue;
     }
 
-    public void tick(World world) {
+    public void tick() {
         setPrevPos();
 
-        move(world, 0);
+        move(0);
         energy -= energyCost;
 
         Field field = world.getFields()[x][y];
@@ -50,6 +53,7 @@ public class Creature {
     }
 
     private void die() {
+        world.getFields()[x][y].creatureLeaves();
         alive = false;
     }
 
@@ -69,7 +73,7 @@ public class Creature {
         }
     }
 
-    public void move(World world, int recursiveCounter) {
+    public void move(int recursiveCounter) {
 
         Random random = new Random();
         if (random.nextDouble() > turnChance) {
@@ -122,7 +126,7 @@ public class Creature {
         if(world.getFields()[newX][newY].isBlocked()) {
             this.turn();
             if(recursiveCounter < 8) {
-                this.move(world, recursiveCounter + 1);
+                this.move(recursiveCounter + 1);
             }
         } else {
             prevX = x;
@@ -150,7 +154,7 @@ public class Creature {
         return prevY;
     }
 
-    public Creature reproduce(World world) {
+    public Creature reproduce() {
         // Mutatable values
         double childOffspringEnergy = this.offspringEnergy;
         double childReproductionEnergyNeeded = this.reproductionEnergyNeeded;
@@ -202,7 +206,7 @@ public class Creature {
             // Create child and reduce energy of parent
             Creature child = new Creature(childX, childY, offspringEnergy, direction, childEnergyCost, turnChance,
                     childOffspringEnergy, childReproductionEnergyNeeded, childEnergyCost / 5,
-                    childOffspringEnergy / 5, childReproductionEnergyNeeded / 5);
+                    childOffspringEnergy / 5, childReproductionEnergyNeeded / 5, world);
             energy -= offspringEnergy;
             return child;
         }

@@ -32,7 +32,7 @@ public class ControlView {
 
         Creature creature = new Creature(10, 10, 0.5, 45, energyCost, 0.5,
                 offspringEnergy, reproductionEnergyNeeded, energyCost / 5, offspringEnergy / 5,
-                reproductionEnergyNeeded / 5);
+                reproductionEnergyNeeded / 5, algorithm.getWorld());
         algorithm.addCreature(creature);
     }
 
