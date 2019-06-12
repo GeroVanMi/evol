@@ -20,7 +20,11 @@ public class Statskeeper implements TickListener {
 
         double averageAmountCreatures = totalCreatures / passedTicks;
 
+        System.out.println("Passed ticks: " + passedTicks);
+        System.out.println("Total amount of creatures: " + totalCreatures);
+        System.out.println("Current amount of creatures: " + algorithm.getCreatures().size());
         System.out.println("Average amount of creatures: " + averageAmountCreatures);
+        System.out.println("--------------------------------------------");
     }
 
     @Override

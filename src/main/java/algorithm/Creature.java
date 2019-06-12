@@ -155,34 +155,6 @@ public class Creature {
     }
 
     public Creature reproduce() {
-        // Mutatable values
-        double childOffspringEnergy = this.offspringEnergy;
-        double childReproductionEnergyNeeded = this.reproductionEnergyNeeded;
-        double childEnergyCost = this.energyCost;
-
-        // Mutate
-        Random mutation = new Random();
-
-        if(mutation.nextDouble() > 0.95) {
-            double mutationValue = mutation.nextDouble() - 0.5 / 2;
-            if(childOffspringEnergy + mutationValue > 0) {
-                childOffspringEnergy += mutationValue;
-            }
-        }
-        if(mutation.nextDouble() > 0.95) {
-            double mutationValue = mutation.nextDouble() - 0.5 / 2;
-            if(childReproductionEnergyNeeded + mutationValue > 0) {
-                childReproductionEnergyNeeded += mutationValue;
-            }
-        }
-
-        if(mutation.nextDouble() > 0.95) {
-            double mutationValue = mutation.nextDouble() - 0.5 / 2;
-            if(energyCost + mutationValue > 0) {
-                childEnergyCost +=  mutationValue;
-            }
-        }
-
         boolean hasFreeSpace = false;
 
         int childX = -1;
@@ -203,10 +175,42 @@ public class Creature {
         }
 
         if(hasFreeSpace) {
+
+            // Mutatable values
+            double childOffspringEnergy = this.offspringEnergy;
+            double childReproductionEnergyNeeded = this.reproductionEnergyNeeded;
+            double childEnergyCost = this.energyCost;
+
+            // Mutate
+            Random mutation = new Random();
+
+            if(mutation.nextDouble() > 0.95) {
+                double mutationValue = mutation.nextDouble() - 0.5 / 2;
+                if(childOffspringEnergy + mutationValue > 0) {
+                    childOffspringEnergy += mutationValue;
+                }
+            }
+            if(mutation.nextDouble() > 0.95) {
+                double mutationValue = mutation.nextDouble() - 0.5 / 2;
+                if(childReproductionEnergyNeeded + mutationValue > 0) {
+                    childReproductionEnergyNeeded += mutationValue;
+                }
+            }
+
+            if(mutation.nextDouble() > 0.95) {
+                double mutationValue = mutation.nextDouble() - 0.5 / 2;
+                if(energyCost + mutationValue > 0) {
+                    childEnergyCost +=  mutationValue;
+                }
+            }
+
+            double red = Math.exp(-childEnergyCost);
+            double green = Math.exp(-childOffspringEnergy);
+            double blue = Math.exp(-childReproductionEnergyNeeded);
+
             // Create child and reduce energy of parent
             Creature child = new Creature(childX, childY, offspringEnergy, direction, childEnergyCost, turnChance,
-                    childOffspringEnergy, childReproductionEnergyNeeded, childEnergyCost / 5,
-                    childOffspringEnergy / 5, childReproductionEnergyNeeded / 5, world);
+                    childOffspringEnergy, childReproductionEnergyNeeded, red, green, blue, world);
             energy -= offspringEnergy;
             return child;
         }

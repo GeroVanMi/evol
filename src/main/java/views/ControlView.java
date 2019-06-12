@@ -26,13 +26,16 @@ public class ControlView {
     }
 
     private void handleAddCreature(ActionEvent actionEvent) {
-        double energyCost = 0.1;
+        double energyCost = 0.3;
         double offspringEnergy = 1;
         double reproductionEnergyNeeded = 1.5;
 
-        Creature creature = new Creature(10, 10, 0.5, 45, energyCost, 0.5,
-                offspringEnergy, reproductionEnergyNeeded, energyCost / 5, offspringEnergy / 5,
-                reproductionEnergyNeeded / 5, algorithm.getWorld());
+        double red = Math.exp(-energyCost);
+        double green = Math.exp(-offspringEnergy);
+        double blue = Math.exp(-reproductionEnergyNeeded);
+
+        Creature creature = new Creature(5, 5, 0.5, 45, energyCost, 0.5,
+                offspringEnergy, reproductionEnergyNeeded, red, green, blue, algorithm.getWorld());
         algorithm.addCreature(creature);
     }
 

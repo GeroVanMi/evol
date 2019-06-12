@@ -96,6 +96,5 @@ public class WorldView implements TickListener {
     @Override
     public void updateAll() {
         this.renderFullWorld();
-        this.update();
     }
 }
